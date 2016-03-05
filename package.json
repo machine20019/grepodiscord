@@ -1,0 +1,34 @@
+{
+  "name": "Grepolis-DiscordBot",
+  "version": "0.1.1",
+  "homepage": "https://github.com/briantanner/Grepolis-DiscordBot",
+  "author": {
+    "name": "Brian Tanner",
+    "email": "brian@tanner.io"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/briantanner/Grepolis-DiscordBot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/briantanner/Grepolis-DiscordBot/issues"
+  },
+  "private": true,
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "dependencies": {
+    "accounting": "~0.3.2",
+    "async": "*",
+    "bluebird": "^3.3.3",
+    "discord.js": "^6.0.0",
+    "dotenv": "^1.2.0",
+    "moment": "^2.11.2",
+    "moment-duration-format": "^1.3.0",
+    "pg": "^4.5.1",
+    "pg-hstore": "^2.3.2",
+    "sequelize": "^3.19.3",
+    "underscore": "^1.6.0",
+    "urlencode": "^1.1.0"
+  }
+}
