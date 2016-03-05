@@ -111,7 +111,7 @@ function addMonitor (data) {
 
 function updateMonitor (data) {
   return new Promise(function (resolve) {
-    var alliances = data.monitor.alliances.split(',');
+    var alliances = _.map(data.monitor.alliances.split(','), function (n) { return parseInt(n,10); });
 
     if (alliances.indexOf(data.allianceId) !== -1) {
       alliances = _.without(alliances, data.allianceId);
