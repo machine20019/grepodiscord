@@ -2,12 +2,11 @@
 
 var util = require('util');
 
-require("moment-duration-format");
-
 module.exports = {
   name: "whois",
   description: "Get user information.",
-  usage: "!whois <username>",
+  usage: "!whois <user mention>",
+  example: "!whois @Lance",
   permissions: "manageServer",
   callback: function (msg, command, args) {
     var bot = this.bot;
@@ -16,6 +15,7 @@ module.exports = {
       var msgArray = [];
       msgArray.push(module.exports.description);
       msgArray.push(util.format("Usage: %s", module.exports.usage));
+      msgArray.push(util.format("Example: %s", module.exports.example));
       return bot.sendMessage(msg.channel, msgArray);
     }
 

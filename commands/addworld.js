@@ -18,7 +18,7 @@ module.exports = {
       var msgArray = [];
       msgArray.push(module.exports.description);
       msgArray.push(util.format("Usage: %s", module.exports.usage));
-      msgArray.push(util.format("Example: %s", module.exports.exampls));
+      msgArray.push(util.format("Example: %s", module.exports.example));
       return bot.sendMessage(msg.channel, msgArray);
     }
 
