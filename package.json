@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "accounting": "~0.3.2",
-    "async": "*",
+    "async": "^1.5.2",
     "bluebird": "^3.3.3",
     "discord.js": "^6.0.0",
     "dotenv": "^1.2.0",

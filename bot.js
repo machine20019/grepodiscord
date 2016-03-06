@@ -5,6 +5,7 @@ var _ = require('underscore'),
     util = require('util'),
     moment = require('moment'),
     models = require('./models'),
+    serverAdmin = require('./lib/admin.js'),
     Discord = require('discord.js'),
     bot = new Discord.Client(),
     commandPath = require("path").join(__dirname, "commands"),
@@ -22,7 +23,8 @@ var config = {
   botServer: null,
   logChannel: null,
   pollInterval: 600,
-  serverList: {}
+  serverList: {},
+  adminServers: {}
 };
 
 // load commands
@@ -61,6 +63,18 @@ function init() {
     .then(function (serverList) {
       config.serverList = serverList.map(function (o) { return o.toJSON(); });
     });
+
+  models.AdminServers.findAll({})
+    .then(function (servers) {
+      var serverIds = _.pluck(servers, 'id');
+
+      servers = _.indexBy(servers, 'id');
+
+      config.adminServers = {
+        list: servers,
+        ids: serverIds
+      };
+    });
 }
 
 function login() {
@@ -89,8 +103,19 @@ bot.on("message", function (msg) {
     return;
   }
 
+  if (config.adminServers.ids.indexOf(serverId) !== -1) {
+    serverAdmin.handle(bot, msg, config, serverId);
+    // {
+    //   bot: bot,
+    //   msg: msg,
+    //   channel: channel,
+    //   config: config,
+    //   chatLog: chatLog
+    // }
+  }
+
   // Ignore commands if not in bot channel, don't ignore join/leave commands
-  if (channel.name !== 'bot' && overrides.indexOf(cmd) !== -1) {
+  if ((channel.name !== 'bot' && channel.name !== 'server') || overrides.indexOf(cmd) !== -1) {
     if (serverId !== config.botServerId) {
       return;
     }
@@ -123,7 +148,7 @@ bot.on("message", function (msg) {
         msgArray.push(util.format("More Commands: %s", managerList.join(", ")));
       }
 
-      // bot mod commnads
+      // bot mod commands
       // if (userAuth.length && (userAuth.mod === true || userAuth.admin === true)) {
       //   msgArray.push(util.format("Mod Commands: %s", modList.join(", ")));
       // }
@@ -158,5 +183,35 @@ bot.on("message", function (msg) {
     logMessage(msg, cmd, args);
   }
 });
+
+bot.on("serverNewMember", function (server, user) {
+  var serverChannel = _.findWhere(server.channels, { name: 'server' });
+  
+  if (!serverChannel) {
+    return;
+  }
+  
+  bot.sendMessage(serverChannel, util.format("%s joined %s", user.username, server.name));
+});
+
+bot.on("serverMemberRemoved", function (server, user) {
+  var serverChannel = _.findWhere(server.channels, { name: 'server' });
+
+  if (!serverChannel) {
+    return;
+  }
+  
+  bot.sendMessage(serverChannel, util.format("%s left %s", user.username, server.name));
+});
+
+// bot.on("messageDeleted", function (msg, channel) {
+//   var serverChannel = _.findWhere(channel.server.channels, { name: 'server' });
+
+//   if (!serverChannel || !msg) {
+//     return;
+//   }
+
+//   bot.sendMessage(serverChannel, util.format("Message removed in %s by %s: %s", channel.name, msg.author.username, msg.content));
+// });
 
 models.sequelize.sync().then(login);
