@@ -4,6 +4,7 @@ var _ = require('underscore'),
     fs = require('fs'),
     util = require('util'),
     moment = require('moment'),
+    logger = require('./lib/logger'),
     models = require('./models'),
     serverAdmin = require('./lib/admin.js'),
     Discord = require('discord.js'),
@@ -43,51 +44,15 @@ bot.on("ready", function () {
   bot.joinServer(config.defaultServer);
   config.botServer = bot.servers.get("id", config.botServerId)
   config.logChannel = config.botServer.channels.get("id", config.logChannelId)
-  console.log("Bot Server: ", config.botServer.name);
-  console.log("Bot Log Channel: ", config.logChannel.name);
-})
+  logger.info("Bot Connected as %s (%s) on %d servers\n", bot.user.username, bot.user.id, bot.servers.length);
+  logger.info("Bot Server: %s (%s)", config.botServer.name, config.botServer.id);
+  logger.info("Bot Log Channel: %s (%s)\n", config.logChannel.name, config.logChannel.id);
+});
 
 bot.on("disconnected", function () {
-  console.log("Disconnected!");
-  process.exit(0);
-})
-
-function init() {
-  models.Auth.findAll({})
-    .then(function (authList) {
-      authList = authList.map(function (row) { return row.toJSON(); });  
-      config.authList = authList;
-    });
-
-  models.Servers.findAll({})
-    .then(function (serverList) {
-      config.serverList = serverList.map(function (o) { return o.toJSON(); });
-    });
-
-  models.AdminServers.findAll({})
-    .then(function (servers) {
-      var serverIds = _.pluck(servers, 'id');
-
-      servers = _.indexBy(servers, 'id');
-
-      config.adminServers = {
-        list: servers,
-        ids: serverIds
-      };
-    });
-}
-
-function login() {
-  bot.login(config.email, config.password).then(init);
-}
-
-function logMessage (msg, command, args) {
-  config.logChannel.sendMessage(util.format("[%s/%s/%s]: %s %s", msg.channel.server.name, msg.channel.name, msg.author.name, command, JSON.stringify(args)));
-}
-
-function chatLog (level, error) {
-  config.logChannel.sendMessage(util.format("[%s]: %s", level, error));
-}
+  logger.warn("Disconnected");
+  reconnect();
+});
 
 bot.on("message", function (msg) {
   var serverId = (msg.channel.server) ? msg.channel.server.id : null,
@@ -214,4 +179,53 @@ bot.on("serverMemberRemoved", function (server, user) {
 //   bot.sendMessage(serverChannel, util.format("Message removed in %s by %s: %s", channel.name, msg.author.username, msg.content));
 // });
 
-models.sequelize.sync().then(login);
+// connect to db and discord.
+models.sequelize.sync()
+  .then(login)
+  .catch(modelError);
+
+function init() {
+  models.Auth.findAll({})
+    .then(function (authList) {
+      authList = authList.map(function (row) { return row.toJSON(); });  
+      config.authList = authList;
+    });
+
+  models.Servers.findAll({})
+    .then(function (serverList) {
+      config.serverList = serverList.map(function (o) { return o.toJSON(); });
+    });
+
+  models.AdminServers.findAll({})
+    .then(function (servers) {
+      var serverIds = _.pluck(servers, 'id');
+
+      servers = _.indexBy(servers, 'id');
+
+      config.adminServers = {
+        list: servers,
+        ids: serverIds
+      };
+    });
+}
+
+function login() {
+  bot.login(config.email, config.password).then(init);
+}
+
+function reconnect() {
+  logger.info("Attempting to reconnect...");
+  login();
+}
+
+function logMessage (msg, command, args) {
+  config.logChannel.sendMessage(util.format("[%s/%s/%s]: %s %s", msg.channel.server.name, msg.channel.name, msg.author.name, command, JSON.stringify(args)));
+}
+
+function chatLog (level, error) {
+  config.logChannel.sendMessage(util.format("[%s]: %s", level, error));
+}
+
+function modelError (err) {
+  logger.error("DB Error: %s \n\t %s", err.name, err.message);
+}

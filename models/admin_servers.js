@@ -22,6 +22,14 @@ module.exports = function (sequelize, DataTypes) {
     info_message: {
       type: DataTypes.STRING,
       allowNull: true
+    },
+    default_channel: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    show_joins: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false
     }
   }, {
     tableName: 'bot_admin_servers'

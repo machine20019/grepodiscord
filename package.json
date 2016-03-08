@@ -29,6 +29,7 @@
     "pg-hstore": "^2.3.2",
     "sequelize": "^3.19.3",
     "underscore": "^1.6.0",
-    "urlencode": "^1.1.0"
+    "urlencode": "^1.1.0",
+    "winston": "^2.2.0"
   }
 }
