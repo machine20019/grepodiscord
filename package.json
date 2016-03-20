@@ -15,7 +15,7 @@
   },
   "private": true,
   "scripts": {
-    "start": "node bot.js"
+    "start": "node app.js"
   },
   "dependencies": {
     "accounting": "~0.3.2",
