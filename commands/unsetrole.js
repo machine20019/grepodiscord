@@ -1,7 +1,7 @@
-"use strict"
+"use strict";
 
-var _ = require('underscore'),
-    util = require('util');
+const _ = require('underscore');
+const util = require('util');
 
 module.exports = {
   name: "unsetrole",
@@ -9,12 +9,12 @@ module.exports = {
   usage: "!unsetrole <user mention> <role>",
   permissions: "manageServer",
   callback: function (msg, command, args) {
-    var bot = this.bot,
+    let bot = this.bot,
         username,
         rolename;
 
     if (!args.length) {
-      var msgArray = [];
+      let msgArray = [];
       msgArray.push(module.exports.description);
       msgArray.push(util.format("Usage: %s", module.exports.usage));
       return bot.sendMessage(msg.channel, msgArray);
@@ -31,10 +31,10 @@ module.exports = {
     username = args.shift();
     rolename = args.join(' ');
 
-    var user = _.findWhere(msg.channel.server.members, { username: username }),
+    let user = _.findWhere(msg.channel.server.members, { username: username }),
         role = _.findWhere(msg.channel.server.roles, { name: rolename });
 
-    bot.removeMemberFromRole(user, role, function () {
+    bot.removeMemberFromRole(user, role, () => {
       bot.sendMessage(msg.channel, util.format("Removed %s from role %s", user.username, rolename));
     });
   }

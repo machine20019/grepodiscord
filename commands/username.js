@@ -1,7 +1,6 @@
-"use strict"
+"use strict";
 
-var util = require('util'),
-    email;
+const util = require('util');
 
 module.exports = {
   name: "username",
@@ -9,12 +8,13 @@ module.exports = {
   usage: "!username <current username> <new username>",
   permissions: "admin",
   callback: function (msg, command, args) {
-    var bot = this.bot,
+    let bot = this.bot,
         config = this.config,
-        chatLog = this.chatLog;
+        chatLog = this.chatLog,
+        email;
 
     if (!args.length || args[0] !== bot.user.username) {
-      var msgArray = [];
+      let msgArray = [];
       msgArray.push(module.exports.description);
       msgArray.push(util.format("Usage: %s", module.exports.usage));
       return bot.sendMessage(msg.channel, msgArray);
@@ -22,13 +22,13 @@ module.exports = {
 
     if (args[1].length) {
       email = config.email;
-      bot.setUsername(args[1], function (err) {
+      bot.setUsername(args[1], err => {
         if (err) {
           return chatLog("Error", util.format("Failed to set username to: %s requested by %s", args[1], msg.author));
         }
         bot.sendMessage(msg.channel, util.format("Username changed to %s", args[1]));
         chatLog("Info", util.format("Set username: %s requested by %s", args[1], msg.author));
-      })
+      });
     }
   }
 };

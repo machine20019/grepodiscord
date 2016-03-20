@@ -1,18 +1,19 @@
-"use strict"
+"use strict";
 
-var _ = require('underscore'),
-    util = require('util'),
-    async = require('async'),
-    Promise = require('bluebird'),
-    models = require('../models'),
-    config;
+const _ = require('underscore');
+const util = require('util');
+const async = require('async');
+const models = require('../models');
+const logger = require('../lib/logger');
+
+let config;
 
 module.exports = {
   name: "monitorlist",
   description: "Monitors an alliance.",
   usage: "!monitorlist",
   callback: function (msg, command, args) {
-    var bot = this.bot,
+    let bot = this.bot,
         chatLog = this.chatLog,
         world;
 
@@ -24,56 +25,65 @@ module.exports = {
 
     world = args.shift();
 
-    models.Monitors
-      .find({
-        where: {
-          server: msg.channel.server.id,
-          channel: msg.channel.id
-        }
-      })
-      .then(function (monitors) {
-        if (!monitors) {
-          return bot.sendMessage(msg.channel, "There are no monitors for this channel.");
+    models.Monitors.findAll({
+      where: {
+        server: msg.channel.server.id,
+        channel: msg.channel.id
+      }
+    })
+    .then(monitors => {
+      if (!monitors) {
+        return bot.sendMessage(msg.channel, "There are no monitors for this channel.");
+      }
+
+      monitors = _.map(monitors, o => { return o.toJSON(); });
+
+      let alliances = [];
+      
+      async.each(monitors, (monitor, callback) => {
+        if (!monitor.alliances) {
+          return callback();
         }
 
-        var alliances = [];
-        
-        async.each(monitors, function (monitor, callback) {
-          if (!monitor.alliances) {
-            return callback();
-          }
-
-          getAlliances(monitor).then(function (result) {
-            // alliances[monitor.world] = result;
-            alliances.push(util.format("%s (%s)", result, monitor.world));
-            return callback();
+        getAlliances(monitor)
+        .then(result => {
+          // alliances[monitor.world] = result;
+          _.each(result, alliance => {
+            alliances.push(util.format("%s (%s)", alliance, monitor.world));
           });
-        }, function (err) {
-          alliances.unshift("Alliances monitored in this chat:");
-          bot.sendMessage(msg.channel, alliances);
+          return callback();
+        })
+        .catch(err => {
+          return callback(err);
         });
+
+      }, err => {
+        if (err) { logger.error(err); }
+        alliances.unshift("Alliances monitored in this chat:");
+        bot.sendMessage(msg.channel, alliances);
       });
-    }
+    });
+  }
 };
 
 function getAlliances (monitor) {
 
-  return new Promise(function (resolve) {
+  return new Promise((resolve, reject) => {
 
-    var world = _.findWhere(config.serverList, { name: monitor.world });
+    let world = _.findWhere(config.servers, { name: monitor.world });
 
     models.Alliances
-      .find({
-        where: {
-          server: world.server,
-          id: { $in: monitor.alliances.split(',') }
-        },
-        attributes: ['name']
-      })
-      .then(function (alliances) {
-        alliances = alliances.map(function (o) { return o.values(); });
-        console.log(_.pluck(alliances, "name"));
-        return resolve(_.pluck(alliances, "name"));
-      });
+    .findAll({
+      where: {
+        server: world.server,
+        id: { $in: monitor.alliances.split(',') }
+      },
+      attributes: ['name']
+    })
+    .then(alliances => {
+      alliances = alliances.map(o => { return o.toJSON(); });
+      console.log(_.pluck(alliances, "name"));
+      return resolve(_.pluck(alliances, "name"));
+    });
   });
 }

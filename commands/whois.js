@@ -1,6 +1,6 @@
-"use strict"
+"use strict";
 
-var util = require('util');
+const util = require('util');
 
 module.exports = {
   name: "whois",
@@ -9,10 +9,10 @@ module.exports = {
   example: "!whois @Lance",
   permissions: "manageServer",
   callback: function (msg, command, args) {
-    var bot = this.bot;
+    let bot = this.bot;
 
     if (!args.length) {
-      var msgArray = [];
+      let msgArray = [];
       msgArray.push(module.exports.description);
       msgArray.push(util.format("Usage: %s", module.exports.usage));
       msgArray.push(util.format("Example: %s", module.exports.example));
@@ -27,8 +27,8 @@ module.exports = {
       return bot.sendMessage(msg.channel, "Please mention the user.");
     }
 
-    msg.mentions.map(function (user) {
-      var msgArray = [];
+    msg.mentions.map(user => {
+      let msgArray = [];
       msgArray.push("");
       msgArray.push(util.format("User: `%s`", user.username));
       msgArray.push(util.format("ID: `%s`", user.id));

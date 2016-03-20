@@ -1,7 +1,7 @@
-"use strict"
+"use strict";
 
-module.exports = function (sequelize, DataTypes) {
-  var AdminServers = sequelize.define('AdminServers', {
+module.exports = (sequelize, DataTypes) => {
+  let AdminServers = sequelize.define('AdminServers', {
     id: {
       type: DataTypes.STRING,
       primaryKey: true,

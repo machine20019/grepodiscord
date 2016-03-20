@@ -1,7 +1,7 @@
-"use strict"
+"use strict";
 
-var util = require('util'),
-    models = require('../models');
+const util = require('util');
+const models = require('../models');
 
 module.exports = {
   name: "addworld",
@@ -10,12 +10,12 @@ module.exports = {
   example: "!addworld baris us46",
   permissions: "admin",
   callback: function (msg, command, args) {
-    var bot = this.bot,
+    let bot = this.bot,
         config = this.config,
         chatLog = this.chatLog;
 
     if (!args.length || args.length < 2 || args[1].length !== 4) {
-      var msgArray = [];
+      let msgArray = [];
       msgArray.push(module.exports.description);
       msgArray.push(util.format("Usage: %s", module.exports.usage));
       msgArray.push(util.format("Example: %s", module.exports.example));
@@ -28,8 +28,8 @@ module.exports = {
         name: args[0]
       })
       .save()
-      .then(function () {
-        models.Servers.findAll({}).then(function (serverList) {
+      .then(() => {
+        models.Servers.findAll({}).then(serverList => {
           // update server list
           config.serverList = serverList;
           

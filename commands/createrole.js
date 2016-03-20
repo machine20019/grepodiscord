@@ -1,6 +1,6 @@
-"use strict"
+"use strict";
 
-var util = require('util');
+const util = require('util');
 
 module.exports = {
   name: "createrole",
@@ -8,10 +8,10 @@ module.exports = {
   usage: "!createrole <role>",
   permissions: "manageServer",
   callback: function (msg, command, args) {
-    var bot = this.bot;
+    let bot = this.bot;
 
     if (!args.length) {
-      var msgArray = [];
+      let msgArray = [];
       msgArray.push(module.exports.description);
       msgArray.push(util.format("Usage: %s", module.exports.usage));
       return bot.sendMessage(msg.channel, msgArray);
@@ -29,7 +29,7 @@ module.exports = {
       name: args[0]
     };
 
-    bot.createRole(msg.channel.server, role, function () {
+    bot.createRole(msg.channel.server, role, () => {
       bot.sendMessage(msg.channel, util.format("Created role %s", args[0]));
     });
   }

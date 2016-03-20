@@ -1,6 +1,6 @@
-"use strict"
+"use strict";
 
-var util = require('util');
+const util = require('util');
 
 module.exports = {
   name: "delrole",
@@ -8,10 +8,10 @@ module.exports = {
   usage: "!delrole <role>",
   permissions: "manageServer",
   callback: function (msg, command, args) {
-    var bot = this.bot;
+    let bot = this.bot;
 
     if (!args.length) {
-      var msgArray = [];
+      let msgArray = [];
       msgArray.push(module.exports.description);
       msgArray.push(util.format("Usage: %s", module.exports.usage));
       return bot.sendMessage(msg.channel, msgArray);
@@ -25,7 +25,7 @@ module.exports = {
       return bot.sendMessage(msg.channel, "I don't have permission to do that on this server.");
     }
 
-    bot.deleteRole(msg.channel.server, args[0], function () {
+    bot.deleteRole(msg.channel.server, args[0], () => {
       bot.sendMessage(msg.channel, util.format("Deleted role %s", args[0]));
     });
   }

@@ -1,29 +1,29 @@
-"use strict"
+"use strict";
 
-var util = require('util');
+const util = require('util');
 
 module.exports = {
   name: "join",
   description: "Tell the bot to join a server.",
   usage: "!join <invite link>",
   callback: function (msg, command, args) {
-    var bot = this.bot,
+    let bot = this.bot,
         chatLog = this.chatLog;
     
     if (!args.length) {
-      var msgArray = [];
+      let msgArray = [];
       msgArray.push(module.exports.description);
       msgArray.push(util.format("Usage: %s", module.exports.usage));
       return bot.sendMessage(msg.channel, msgArray);
     }
     
-    bot.joinServer(args[0], function (err, server) {
+    bot.joinServer(args[0], (err, server) => {
       if (err || !server) {
         chatLog("Error", util.format("Failed to join server: %s", err));
         return bot.sendMessage(msg.channel, "Unable to join server, try again.");
       }
 
-      var msgArray = [],
+      let msgArray = [],
           recipient;
 
       if (server.owner.id !== msg.author.id) {
@@ -36,7 +36,7 @@ module.exports = {
       }
 
       msgArray.push("Commands will only work in the **bot** channel. If you have not already created this channel, please do now.");
-      msgArray.push("Please make sure that I have sufficient permissions to read and post messages in the bot channel.")
+      msgArray.push("Please make sure that I have sufficient permissions to read and post messages in the bot channel.");
       msgArray.push("For a list of commands type **!help**.");
       
       bot.sendMessage(recipient, msgArray);

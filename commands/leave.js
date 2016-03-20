@@ -1,6 +1,6 @@
-"use strict"
+"use strict";
 
-var util = require('util');
+const util = require('util');
 
 module.exports = {
   name: "leave",
@@ -8,11 +8,11 @@ module.exports = {
   usage: "!leave <server name>",
   permissions: "manageServer",
   callback: function (msg, command, args) {
-    var bot = this.bot,
+    let bot = this.bot,
         chatLog = this.chatLog;
 
     if (!args.length) {
-      var msgArray = [];
+      let msgArray = [];
       msgArray.push(module.exports.description);
       msgArray.push(util.format("Usage: %s", module.exports.usage));
       return bot.sendMessage(msg.channel, msgArray);
@@ -29,11 +29,11 @@ module.exports = {
 
     if (!msg.channel.permissionsOf(msg.sender).hasPermission("manageServer")) {
       bot.sendMessage(msg.channel, "You don't have the permissions to use this command.");
-      chatLog("Warn", util.format("A non-privileged user (%s) tried to make me leave a server (%s)", msg.sender.username, server.name));
+      chatLog("Warn", util.format("A non-privileged user (%s) tried to make me leave a server (%s)", msg.sender.username, msg.channel.server.name));
       return;
     }
 
-    bot.sendMessage(msg.channel, "See ya!", function () {
+    bot.sendMessage(msg.channel, "See ya!", () => {
       bot.leaveServer(msg.channel.server);
       chatLog("Info", util.format("Left server: %s requested by %s", msg.channel.server.name, msg.sender.mention()));
     });

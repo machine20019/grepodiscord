@@ -1,7 +1,7 @@
-"use strict"
+"use strict";
 
-module.exports = function (sequelize, DataTypes) {
-  var Auth = sequelize.define('Auth', {
+module.exports = (sequelize, DataTypes) => {
+  let Auth = sequelize.define('Auth', {
     id: {
       type: DataTypes.BIGINT,
       primaryKey: true,

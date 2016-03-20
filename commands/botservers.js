@@ -1,11 +1,7 @@
-"use strict"
+"use strict";
 
-var _ = require('underscore'),
-    util = require('util'),
-    async = require('async'),
-    Promise = require('bluebird'),
-    models = require('../models'),
-    config;
+const _ = require('underscore');
+const util = require('util');
 
 module.exports = {
   name: "botservers",
@@ -13,16 +9,17 @@ module.exports = {
   usage: "!botservers",
   permissions: "admin",
   callback: function (msg, command, args) {
-    var bot = this.bot,
-        chatLog = this.chatLog,
+    let bot = this.bot,
         servers = bot.servers,
         msgArray = [];
 
-    servers = servers.map(function (o) { return { id: o.id, name: o.name }; });
+    servers = servers.map(o => {
+      return { id: o.id, name: o.name };
+    });
 
     msgArray.push("Bot Servers:");
 
-    _.each(servers, function (o) {
+    _.each(servers, o => {
       msgArray.push(util.format("%s (%s)", o.name, o.id));
     });
 

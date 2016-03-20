@@ -1,7 +1,7 @@
-"use strict"
+"use strict";
 
-module.exports = function (sequelize, DataTypes) {
-  var Monitors = sequelize.define('Monitors', {
+module.exports = (sequelize, DataTypes) => {
+  let Monitors = sequelize.define('Monitors', {
     server: {
       type: DataTypes.BIGINT,
       allowNull: false,

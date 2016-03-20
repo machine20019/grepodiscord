@@ -1,22 +1,21 @@
-"use strict"
+"use strict";
 
-var _ = require('underscore'),
-    util = require('util'),
-    Promise = require('bluebird'),
-    models = require('../models');
+const _ = require('underscore');
+const util = require('util');
+const models = require('../models');
 
 module.exports = {
   name: "monitor",
   description: "Monitors an alliance.",
   usage: "!monitor <world name> <alliance name>",
   callback: function (msg, command, args) {
-    var bot = this.bot,
+    let bot = this.bot,
         config = this.config,
         chatLog = this.chatLog,
         world;
 
     if (!args.length || args.length < 2) {
-      var msgArray = [];
+      let msgArray = [];
       msgArray.push(module.exports.description);
       msgArray.push(util.format("Usage: %s", module.exports.usage));
       msgArray.push(util.format("Example: %s", module.exports.exampls));
@@ -29,12 +28,12 @@ module.exports = {
 
     world = args.shift();
 
-    var data = {
+    let data = {
       msg: msg,
       world: world,
       server: msg.channel.server.id,
       channel: msg.channel.id,
-      world: _.findWhere(config.serverList, { name: world }),
+      world: _.findWhere(config.servers, { name: world }),
       alliance: args.join(' ')
     };
 
@@ -46,23 +45,25 @@ module.exports = {
           world: world
         }
       })
-      .then(function (monitor) {
+      .then(monitor => {
+        let handler;
+
         if (monitor) {
           data.monitor = monitor;
-          var handler = updateMonitor;
+          handler = updateMonitor;
         } else {
-          var handler = addMonitor;
+          handler = addMonitor;
         }
 
         getAllianceId(data)
           .then(handler)
-          .then(function (data) {
-            var content = '';
+          .then(data => {
+            let content = '';
 
             if (data.added) {
-              content = util.format("Enabled monitor for %s (%s)", data.alliance, data.world.name)
+              content = util.format("Enabled monitor for %s (%s)", data.alliance, data.world.name);
             } else if (data.removed) {
-              content = util.format("Disabled monitor for %s (%s)", data.alliance, data.world.name)
+              content = util.format("Disabled monitor for %s (%s)", data.alliance, data.world.name);
             }
 
             bot.sendMessage(msg.channel, content);
@@ -110,8 +111,9 @@ function addMonitor (data) {
 }
 
 function updateMonitor (data) {
+
   return new Promise(function (resolve) {
-    var alliances = _.map(data.monitor.alliances.split(','), function (n) { return parseInt(n,10); });
+    let alliances = _.map(data.monitor.alliances.split(','), function (n) { return parseInt(n,10); });
 
     if (alliances.indexOf(data.allianceId) !== -1) {
       alliances = _.without(alliances, data.allianceId);
