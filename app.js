@@ -18,6 +18,7 @@ let config = {
   password: process.env.BOT_PASSWORD,
   botServerId: process.env.BOT_SERVER_ID,
   logChannelId: process.env.LOG_CHANNEL_ID,
+  botToken: process.env.BOT_TOKEN,
   botServer: null,
   logChannel: null,
   pollInterval: 600,
