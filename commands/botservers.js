@@ -17,11 +17,12 @@ module.exports = {
       return { id: o.id, name: o.name };
     });
 
-    msgArray.push("Bot Servers:");
+    msgArray.push("```xl\nBot Servers:");
 
     _.each(servers, o => {
-      msgArray.push(util.format("%s (%s)", o.name, o.id));
+      msgArray.push(util.format("\t%s: (%s)", o.name, o.id));
     });
+    msgArray.push("```");
 
     bot.sendMessage(msg.channel, msgArray);
   }

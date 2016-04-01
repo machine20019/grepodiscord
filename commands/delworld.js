@@ -16,9 +16,11 @@ module.exports = {
 
     if (!args.length || args[0].length !== 4) {
       let msgArray = [];
+      msgArray.push("```\n");
       msgArray.push(module.exports.description);
       msgArray.push(util.format("Usage: %s", module.exports.usage));
       msgArray.push(util.format("Example: %s", module.exports.example));
+      msgArray.push("```");
       return bot.sendMessage(msg.channel, msgArray);
     }
 

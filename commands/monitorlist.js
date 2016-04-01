@@ -47,9 +47,8 @@ module.exports = {
 
         getAlliances(monitor)
         .then(result => {
-          // alliances[monitor.world] = result;
           _.each(result, alliance => {
-            alliances.push(util.format("%s (%s)", alliance, monitor.world));
+            alliances.push(util.format("\t%s (%s)", alliance, monitor.world));
           });
           return callback();
         })
@@ -59,7 +58,8 @@ module.exports = {
 
       }, err => {
         if (err) { logger.error(err); }
-        alliances.unshift("Alliances monitored in this chat:");
+        alliances.unshift("```Alliances monitored in this chat:");
+        alliances.push("```");
         bot.sendMessage(msg.channel, alliances);
       });
     });

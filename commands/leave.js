@@ -13,8 +13,10 @@ module.exports = {
 
     if (!args.length) {
       let msgArray = [];
+      msgArray.push("```\n");
       msgArray.push(module.exports.description);
       msgArray.push(util.format("Usage: %s", module.exports.usage));
+      msgArray.push("```");
       return bot.sendMessage(msg.channel, msgArray);
     }
 

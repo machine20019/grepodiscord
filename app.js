@@ -1,15 +1,18 @@
 "use strict";
 
+const fs = require('fs');
 const http = require('http');
 const path = require('path');
 const express = require('express');
 const exphbs  = require('express-handlebars');
 const logger = require('./lib/logger');
+const Bot = require('./lib/bot');
+// const Discord = require('node-discord');
 
-let bot = require('./lib/bot'),
-    app = express();
-
-require('dotenv').load();
+// load .env file if exists
+if (fs.existsSync(path.join(process.env.PWD, '.env'))) {
+  require('dotenv').load();
+}
 
 let config = {
   commandPath: path.join(__dirname, "commands"),
@@ -27,12 +30,13 @@ let config = {
 };
 
 // start bot
-bot(config);
+let bot = new Bot(config),
+    app = express();
 
 /**
  * Start Web Server setup
  */
-app.set('port', process.env.PORT || 8080);
+app.set('port', process.env.PORT || 8000);
 app.set('views', path.join(__dirname, 'views'));
 
 app.engine('hbs', exphbs({

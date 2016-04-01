@@ -6,14 +6,17 @@ module.exports = {
   name: "join",
   description: "Tell the bot to join a server.",
   usage: "!join <invite link>",
+  disabled: true,
   callback: function (msg, command, args) {
     let bot = this.bot,
         chatLog = this.chatLog;
     
     if (!args.length) {
       let msgArray = [];
+      msgArray.push("```\n");
       msgArray.push(module.exports.description);
       msgArray.push(util.format("Usage: %s", module.exports.usage));
+      msgArray.push("```");
       return bot.sendMessage(msg.channel, msgArray);
     }
     
