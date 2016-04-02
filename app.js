@@ -3,6 +3,7 @@
 const fs = require('fs');
 const http = require('http');
 const path = require('path');
+const getenv = require('getenv');
 const express = require('express');
 const exphbs  = require('express-handlebars');
 const logger = require('./lib/logger');
@@ -16,12 +17,13 @@ if (fs.existsSync(path.join(process.env.PWD, '.env'))) {
 
 let config = {
   commandPath: path.join(__dirname, "commands"),
-  defaultServer: process.env.SERVER,
-  email: process.env.BOT_EMAIL,
-  password: process.env.BOT_PASSWORD,
-  botServerId: process.env.BOT_SERVER_ID,
-  logChannelId: process.env.LOG_CHANNEL_ID,
-  botToken: process.env.BOT_TOKEN,
+  defaultServer: getenv('BOT_SERVER'),
+  email: getenv('BOT_EMAIL'),
+  password: getenv('BOT_PASSWORD'),
+  botServerId: getenv('BOT_SERVER_ID'),
+  logChannelId: getenv('LOG_CHANNEL_ID'),
+  botToken: getenv('BOT_TOKEN'),
+  monitorEnabled: getenv.bool('MONITOR_ENABLED', false),
   botServer: null,
   logChannel: null,
   pollInterval: 600,
