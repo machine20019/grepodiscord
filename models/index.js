@@ -6,7 +6,10 @@ let fs = require('fs'),
     basename = path.basename(module.filename),
     db = {};
 
-require('dotenv').load();
+// load .env file if exists
+if (fs.existsSync(path.join(process.env.PWD, '.env'))) {
+  require('dotenv').load();
+}
 
 let sequelize = new Sequelize(process.env.DATABASE_URL, {
   dialectOptions: {
