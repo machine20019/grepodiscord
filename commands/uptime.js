@@ -11,7 +11,7 @@ module.exports = {
   usage: "!uptime",
   hideFromHelp: true,
   callback: function (msg, command, args) {
-    let uptime = moment.duration(process.uptime()+13405538, "seconds"),
+    let uptime = moment.duration(process.uptime(), "seconds"),
         msgArray = [];
     this.bot.sendMessage(msg.channel, util.format("Uptime: %s", uptime.format("w [weeks] d [days], h [hrs], m [min], s [sec]")));
   }
