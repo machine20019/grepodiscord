@@ -1,19 +1,19 @@
 "use strict";
 
 const fs = require('fs');
-const http = require('http');
 const path = require('path');
-const getenv = require('getenv');
-const express = require('express');
-const exphbs  = require('express-handlebars');
-const logger = require('./lib/logger');
-const Bot = require('./lib/bot');
-// const Discord = require('node-discord');
 
-// load .env file if exists
+// load .env file if exists, must be loaded before other modules that require access to env
 if (fs.existsSync(path.join(process.env.PWD, '.env'))) {
   require('dotenv').load();
 }
+
+const http = require('http');
+const getenv = require('getenv');
+const express = require('express');
+const logger = require('./lib/logger');
+const exphbs  = require('express-handlebars');
+const Bot = require('./lib/bot');
 
 let config = {
   commandPath: path.join(__dirname, "commands"),
