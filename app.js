@@ -1,19 +1,12 @@
 "use strict";
 
-const fs = require('fs');
-const path = require('path');
-
 // load .env file if exists, must be loaded before other modules that require access to env
-if (fs.existsSync(path.join(process.env.PWD, '.env'))) {
-  require('dotenv').load();
-}
+require('dotenv').config({ silent: true });
 
-const http = require('http');
+const path = require('path');
 const getenv = require('getenv');
-const express = require('express');
-const logger = require('./lib/logger');
-const exphbs  = require('express-handlebars');
 const Bot = require('./lib/bot');
+const Server = require('./lib/server');
 
 let config = {
   commandPath: path.join(__dirname, "commands"),
@@ -24,6 +17,12 @@ let config = {
   logChannelId: getenv('LOG_CHANNEL_ID'),
   botToken: getenv('BOT_TOKEN'),
   monitorEnabled: getenv.bool('MONITOR_ENABLED', false),
+  port: getenv('PORT', 8000),
+  views: path.join(__dirname, 'views'),
+  public: path.join(__dirname, 'public'),
+  models: path.join(__dirname, 'models'),
+  controllers: path.join(__dirname, 'controllers'),
+  poweredBy: 'GrepInformant http://www.grepinformant.com',
   botServer: null,
   logChannel: null,
   pollInterval: 600,
@@ -33,33 +32,9 @@ let config = {
 
 // start bot
 let bot = new Bot(config),
-    app = express();
+    app = new Server(config, bot);
 
-/**
- * Start Web Server setup
- */
-app.set('port', process.env.PORT || 8000);
-app.set('views', path.join(__dirname, 'views'));
-
-app.engine('hbs', exphbs({
-  extname: '.hbs',
-  defaultLayout: 'main',
-  partialsDir: 'views/partials/'
-}));
-
-app.set('view engine', 'hbs');
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use((req, res, next) => {
-  res.setHeader('X-Powered-By', 'Grepolis Tools https://github.com/briantanner/Grepolis-Tools');
-  next();
+bot.on('ready', () => {
+  app.start();
 });
 
-app.get('/', (req, res) => {
-  res.status(200).send('This is the Grepolis Discord Bot. Nothing to show here.');
-});
-
-// create server
-http.createServer(app).listen(app.get('port'), () => {
-  logger.info('Express server listening on port %d', app.get('port'));
-});

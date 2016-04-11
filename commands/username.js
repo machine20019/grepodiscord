@@ -24,7 +24,7 @@ module.exports = {
 
     if (args[1].length) {
       email = config.email;
-      bot.setUsername(args[1], err => {
+      bot.updateDetails({ username: args[1] }, err => {
         if (err) {
           return chatLog("Error", util.format("Failed to set username to: %s requested by %s", args[1], msg.author));
         }
