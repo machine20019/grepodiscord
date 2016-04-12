@@ -31,16 +31,12 @@ module.exports = {
     player = urlencode.encode(args.slice(0).join(' ').replace(/\s/g, '+'));
     uri = util.format("/api/v1/%s/player/%s", server, player);
 
-    logger.debug(uri);
-
     let pad = function (str, n) {
       return (str + " ".repeat(n)).slice(0, n);
     };
 
     api.request(uri).then(player => {
       player.alliance = player.Alliance.name;
-
-      logger.debug(player.name);
 
       msgArray.push("```");
 
