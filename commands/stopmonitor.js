@@ -5,7 +5,7 @@ const util = require('util');
 module.exports = {
   name: "stopmonitor",
   description: "Stop monitoring for updates",
-  usage: "!stopmonitor",
+  usage: "stopmonitor",
   permissions: "admin",
   callback: function (msg, command, args) {
     if (this.monitor.started !== true) {

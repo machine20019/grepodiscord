@@ -5,7 +5,7 @@ const util = require('util');
 module.exports = {
   name: "startmonitor",
   description: "Start monitoring for updates",
-  usage: "!startmonitor",
+  usage: "startmonitor",
   permissions: "admin",
   callback: function (msg, command, args) {
     if (this.monitor.started === true) {

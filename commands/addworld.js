@@ -6,8 +6,8 @@ const models = require('../models');
 module.exports = {
   name: "addworld",
   description: "Adds a world to be monitored.",
-  usage: "!addworld <world name> <world id>",
-  example: "!addworld baris us46",
+  usage: "addworld <world name> <world id>",
+  example: "addworld baris us46",
   permissions: "admin",
   callback: function (msg, command, args) {
     let bot = this.bot,

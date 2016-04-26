@@ -7,7 +7,7 @@ const models = require('../models');
 module.exports = {
   name: "listworlds",
   description: "List worlds supported by the bot.",
-  usage: "!listworlds",
+  usage: "listworlds",
   callback: function (msg, command, args) {
     var bot = this.bot,
         config = this.config,

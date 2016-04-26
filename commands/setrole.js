@@ -6,7 +6,7 @@ const util = require('util');
 module.exports = {
   name: "setrole",
   description: "Add user to role.",
-  usage: "!setrole <username> <role>",
+  usage: "setrole <username> <role>",
   permissions: "manageServer",
   callback: function (msg, command, args) {
     let username,

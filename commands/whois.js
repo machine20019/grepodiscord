@@ -4,9 +4,10 @@ const util = require('util');
 
 module.exports = {
   name: "whois",
+  aliases: ["who"],
   description: "Get user information.",
-  usage: "!whois <user mention>",
-  example: "!whois @Lance",
+  usage: "whois <user mention>",
+  example: "whois @Lance",
   permissions: "manageServer",
   callback: function (msg, command, args) {
     let bot = this.bot;

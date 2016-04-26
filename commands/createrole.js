@@ -5,7 +5,7 @@ const util = require('util');
 module.exports = {
   name: "createrole",
   description: "Add user to role.",
-  usage: "!createrole <role>",
+  usage: "createrole <role>",
   permissions: "manageServer",
   callback: function (msg, command, args) {
     let bot = this.bot;

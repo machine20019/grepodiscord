@@ -10,7 +10,7 @@ const logger = require('../lib/logger');
 module.exports = {
   name: "player",
   description: "Get player information",
-  usage: "!player <world name> <player name>",
+  usage: "player <world name> <player name>",
   callback: function (msg, command, args) {
     let uri = "",
         player = '',

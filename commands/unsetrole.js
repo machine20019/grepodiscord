@@ -6,7 +6,7 @@ const util = require('util');
 module.exports = {
   name: "unsetrole",
   description: "Remove user from role.",
-  usage: "!unsetrole <user mention> <role>",
+  usage: "unsetrole <user mention> <role>",
   permissions: "manageServer",
   callback: function (msg, command, args) {
     let bot = this.bot,

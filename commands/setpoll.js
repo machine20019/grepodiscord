@@ -5,7 +5,7 @@ const util = require('util');
 module.exports = {
   name: "setpoll",
   description: "Sets the monitor poll interval by taking crontab minutes as argument",
-  usage: "!setpoll <minutes>",
+  usage: "setpoll <minutes>",
   permissions: "admin",
   callback: function (msg, command, args) {
     let crontab = '0 %s * * * *',

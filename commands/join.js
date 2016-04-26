@@ -5,7 +5,7 @@ const util = require('util');
 module.exports = {
   name: "join",
   description: "Tell the bot to join a server.",
-  usage: "!join <invite link>",
+  usage: "join <invite link>",
   disabled: true,
   callback: function (msg, command, args) {
     let bot = this.bot,

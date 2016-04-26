@@ -11,7 +11,7 @@ let config;
 module.exports = {
   name: "monitorlist",
   description: "Monitors an alliance.",
-  usage: "!monitorlist",
+  usage: "monitorlist",
   callback: function (msg, command, args) {
     let bot = this.bot,
         chatLog = this.chatLog,

@@ -7,7 +7,7 @@ const models = require('../models');
 module.exports = {
   name: "monitor",
   description: "Monitors an alliance.",
-  usage: "!monitor <world name> <alliance name>",
+  usage: "monitor <world name> <alliance name>",
   callback: function (msg, command, args) {
     let bot = this.bot,
         config = this.config,
@@ -32,7 +32,6 @@ module.exports = {
 
     let data = {
       msg: msg,
-      world: world,
       server: msg.channel.server.id,
       channel: msg.channel.id,
       world: _.findWhere(config.servers, { name: world }),

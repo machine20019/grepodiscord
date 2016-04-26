@@ -5,7 +5,7 @@ const util = require('util');
 module.exports = {
   name: "username",
   description: "Changes the bot username.",
-  usage: "!username <current username> <new username>",
+  usage: "username <current username> <new username>",
   permissions: "admin",
   callback: function (msg, command, args) {
     let bot = this.bot,
@@ -23,14 +23,21 @@ module.exports = {
     }
 
     if (args[1].length) {
-      email = config.email;
-      bot.updateDetails({ username: args[1] }, err => {
+      bot.setUsername(args[1], err => {
         if (err) {
           return chatLog("Error", util.format("Failed to set username to: %s requested by %s", args[1], msg.author));
         }
+        
         bot.sendMessage(msg.channel, util.format("Username changed to %s", args[1]));
         chatLog("Info", util.format("Set username: %s requested by %s", args[1], msg.author));
       });
+      // bot.updateDetails({ username: args[1] }, err => {
+      //   if (err) {
+      //     return chatLog("Error", util.format("Failed to set username to: %s requested by %s", args[1], msg.author));
+      //   }
+      //   bot.sendMessage(msg.channel, util.format("Username changed to %s", args[1]));
+      //   chatLog("Info", util.format("Set username: %s requested by %s", args[1], msg.author));
+      // });
     }
   }
 };

@@ -5,7 +5,7 @@ const util = require('util');
 module.exports = {
   name: "leave",
   description: "Tells the bot to leave the server. Type the server name to confirm.",
-  usage: "!leave <server name>",
+  usage: "leave <server name>",
   permissions: "manageServer",
   callback: function (msg, command, args) {
     let bot = this.bot,

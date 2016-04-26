@@ -6,7 +6,7 @@ const util = require('util');
 module.exports = {
   name: "botservers",
   description: "Gets a list of servers the bot is in.",
-  usage: "!botservers",
+  usage: "botservers",
   permissions: "admin",
   callback: function (msg, command, args) {
     let bot = this.bot,
@@ -20,6 +20,7 @@ module.exports = {
     msgArray.push("```xl\nBot Servers:");
 
     _.each(servers, o => {
+      
       msgArray.push(util.format("\t%s: (%s)", o.name, o.id));
     });
     msgArray.push("```");
