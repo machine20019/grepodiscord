@@ -1,6 +1,6 @@
 {
   "name": "GrepoDiscord",
-  "version": "0.1.2",
+  "version": "0.3.0",
   "homepage": "https://github.com/briantanner/GrepoDiscord",
   "author": {
     "name": "Brian Tanner",
@@ -15,7 +15,7 @@
   },
   "private": true,
   "scripts": {
-    "start": "node app.js",
+    "start": "node index.js",
     "app": "electron app.js"
   },
   "dependencies": {
