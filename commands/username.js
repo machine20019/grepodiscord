@@ -1,43 +1,42 @@
 "use strict";
 
 const util = require('util');
+const Command = require('../lib/Command');
 
-module.exports = {
-  name: "username",
-  description: "Changes the bot username.",
-  usage: "username <current username> <new username>",
-  permissions: "admin",
-  callback: function (msg, command, args) {
-    let bot = this.bot,
-        config = this.config,
-        chatLog = this.chatLog,
-        email;
-
-    if (!args.length || args[0] !== bot.user.username) {
-      let msgArray = [];
-      msgArray.push("```\n");
-      msgArray.push(module.exports.description);
-      msgArray.push(util.format("Usage: %s", module.exports.usage));
-      msgArray.push("```");
-      return bot.sendMessage(msg.channel, msgArray);
-    }
-
-    if (args[1].length) {
-      bot.setUsername(args[1], err => {
-        if (err) {
-          return chatLog("Error", util.format("Failed to set username to: %s requested by %s", args[1], msg.author));
-        }
-        
-        bot.sendMessage(msg.channel, util.format("Username changed to %s", args[1]));
-        chatLog("Info", util.format("Set username: %s requested by %s", args[1], msg.author));
-      });
-      // bot.updateDetails({ username: args[1] }, err => {
-      //   if (err) {
-      //     return chatLog("Error", util.format("Failed to set username to: %s requested by %s", args[1], msg.author));
-      //   }
-      //   bot.sendMessage(msg.channel, util.format("Username changed to %s", args[1]));
-      //   chatLog("Info", util.format("Set username: %s requested by %s", args[1], msg.author));
-      // });
-    }
+class Username extends Command {
+  
+  constructor(config) {
+    super(config);
+    
+    this.group = "Admin";
+    this.description = "Changes the bot username.";
+    this.usage = "username <current username> <new username>";
+    this.permissions = "admin";
+    this.disableDM = true;
   }
-};
+  
+  static get name() {
+    return "username";
+  }
+  
+  static get aliases() {
+    return ["un"];
+  }
+  
+  execute(msg, args) {
+    super.execute.apply(this, arguments);
+    if (!this.validate(args, 2)) return;
+    
+    if (args.shift() !== msg.client.user.username) return;
+    
+    msg.client.setUsername(args.join(' '), err => {
+      if (err)
+        return this.log("Error", `Failed to set username to: ${args.join(' ')} requested by ${msg.author}`);
+      
+      this.sendMessage(`Username changed to ${args.join(' ')}`);
+      this.log("Info", `Set username: ${args.join(' ')} requested by ${msg.author}`);
+    });
+  }
+}
+
+module.exports = Username;

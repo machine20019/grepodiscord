@@ -1,38 +1,42 @@
 "use strict";
 
 const util = require('util');
+const Command = require('../lib/Command.js');
 
-module.exports = {
-  name: "whois",
-  aliases: ["who"],
-  description: "Get user information.",
-  usage: "whois <user mention>",
-  example: "whois @Lance",
-  permissions: "manageServer",
-  callback: function (msg, command, args) {
-    let bot = this.bot;
-
-    if (!args.length) {
-      let msgArray = [];
-      msgArray.push("```\n");
-      msgArray.push(module.exports.description);
-      msgArray.push(util.format("Usage: %s", module.exports.usage));
-      msgArray.push(util.format("Example: %s", module.exports.example));
-      msgArray.push("```");
-      return bot.sendMessage(msg.channel, msgArray);
-    }
-
-    if (!msg.channel.server) {
-      return bot.sendMessage(msg.author, "I can't do that in DM");
-    }
-
+class Whois extends Command {
+  
+  constructor(config) {
+    super(config);
+    
+    this.group = "Misc";
+    this.description = "Get user information.";
+    this.usage = "whois <user mention>";
+    this.example = "whois @NoobLance";
+    this.disableDM = true;
+  }
+  
+  static get name() {
+    return "whois";
+  }
+  
+  static get aliases() {
+    return ["who"];
+  }
+  
+  execute(msg, args) {
+    super.execute.apply(this, arguments);
+    
+    if (!this.validate(args, 1)) return;
+    
     if (msg.mentions.length === 0) {
-      return bot.sendMessage(msg.channel, "Please mention the user.");
+      return this.sendMessage("Please mention the user.");
     }
+    
+    for (let i in msg.mentions) {
+      let user = msg.mentions[i],
+          msgArray = [];
 
-    msg.mentions.map(user => {
-      let msgArray = [];
-      msgArray.push("```");
+      msgArray.push("```xl");
       msgArray.push(util.format("User:    %s", user.username));
       msgArray.push(util.format("Discrim: %s", user.discriminator));
       msgArray.push(util.format("ID:      %s", user.id));
@@ -41,7 +45,9 @@ module.exports = {
         msgArray.push(util.format("Game:    %s", user.game.name));
       }
       msgArray.push("```");
-      bot.sendMessage(msg.channel, msgArray);
-    });
+      this.sendMessage(msgArray);
+    }
   }
-};
+}
+
+module.exports = Whois;

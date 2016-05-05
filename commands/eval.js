@@ -4,17 +4,36 @@ const _ = require('underscore');
 const vm = require('vm');
 const util = require('util');
 const stringify = require('json-stringify-safe');
+const Command = require('../lib/Command.js');
 
-module.exports = {
-  name: "eval",
-  aliases: ["e"],
-  description: "Get bot info/stats.",
-  usage: "eval [javascript]",
-  hideFromHelp: true,
-  permissions: "admin",
-  callback: function (msg, command, args) {
+class Eval extends Command {
+  
+  constructor(config) {
+    super(config);
+    
+    this.group = "Admin";
+    this.description = "Evaluate js code from discord";
+    this.usage = "eval [javascript]";
+    this.hideFromHelp = true;
+    this.permissions = "admin";
+  }
+  
+  static get name() {
+    return "eval";
+  }
+  
+  static get aliases() {
+    return ["e"];
+  }
+  
+  execute(msg, args) {
+    super.execute.apply(this, arguments);
+    
+    if (!this.validate(args, 1)) return;
+    
     let msgArray = [],
-        bot = this.bot,
+        bot = msg.client,
+        _ = require('underscore'),
         result;
     
     try {
@@ -22,11 +41,13 @@ module.exports = {
     } catch (e) {
       result = e;
     }
-
+    
     msgArray.push("```js");
     msgArray.push(result);
     msgArray.push("```");
     
-    this.bot.sendMessage(msg.channel, msgArray);
+    this.sendMessage(msgArray);
   }
-};
+}
+
+module.exports = Eval;

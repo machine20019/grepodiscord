@@ -3,36 +3,50 @@
 const util = require('util');
 const google = require('google');
 const logger = require('../lib/logger');
+const Command = require('../lib/Command.js');
 
-module.exports = {
-  name: "google",
-  aliases: ["g"],
-  description: "Gets the search results from google",
-  usage: "google [search string]",
-  callback: function (msg, command, args) {
-    var results = [],
+class Google extends Command {
+  
+  constructor(config) {
+    super(config);
+    
+    this.group = "Misc";
+    this.description = 'Gets search results from google';
+    this.usage = 'google <search string>';
+  }
+  
+  static get name() {
+    return 'google';
+  }
+  
+  static get aliases() {
+    return ['g'];
+  }
+  
+  execute(msg, args) {
+    super.execute.apply(this, arguments);
+
+    if (!this.validate(args, 1)) return;
+    
+    let bot = msg.client,
+        results = [],
         link = {};
     
-    this.bot.g = this.bot.g || {};
-
-    if (!args.length) {
-      return this.bot.sendMessage(msg.channel, 'Give me something to search');
-    }
+    bot.g = bot.g || {};
     
     if (args.length === 1 && args[0] === "next") {
-      results = this.bot.g[msg.channel];
+      results = bot.g[msg.channel];
       
       while (!link.href && results.links.length) {
         link = results.links.shift();
       }
       
       if (!link.href) {
-        this.bot.sendMessage(msg.channel, "I'm out of results");
+        this.sendMessage("I'm out of results");
         return;
       }
       
-      this.bot.sendMessage(msg.channel, link.href);
-      
+      this.sendMessage(link.href);
       link = {};
       return;
     }
@@ -42,10 +56,10 @@ module.exports = {
       if (err) { return logger.error(err); }
       
       if (!res.links.length) {
-        return this.bot.sendMessage(msg.channel, "I didn't get any results");
+        return this.sendMessage("I didn't get any results");
       }
       
-      this.bot.g[msg.channel] = res;
+      bot.g[msg.channel] = res;
       
       while (!link.href && res.links.length) {
         link = res.links.shift();
@@ -53,9 +67,11 @@ module.exports = {
       
       results = res.links;
       
-      this.bot.sendMessage(msg.channel, link.href);
+      this.sendMessage(link.href);
       
-      link = {}
+      link = {};
     });
   }
-};
+}
+
+module.exports = Google;

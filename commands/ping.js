@@ -3,18 +3,42 @@
 const fs = require('fs');
 const path = require('path');
 const config = require('../lib/config');
+const Command = require('../lib/Command.js');
 
-module.exports = {
-  name: "ping",
-  description: "Ping the bot.",
-  usage: "ping",
-  hideFromHelp: true,
-  callback: function (msg, command, args) {
-    let msgArray = [],
-        img = fs.readFileSync(path.join(config.imagePath, "finger.png"));
+let img = fs.readFileSync(path.join(config.imagePath, "finger-trans-118.png"));
+
+class Ping extends Command {
+  
+  constructor(config) {
+    super(config);
     
-    this.bot.sendFile(msg.channel, img, () => {
-      this.bot.sendMessage(msg.channel, "Pong Motherfucker");
-    });
+    this.group = "Misc";
+    this.description = 'Pings the bot';
+    this.usage = 'ping';
+    // this.hideFromHelp = true;
   }
-};
+  
+  /**
+   * Command name to be registered
+   */
+  static get name() {
+    return 'ping';
+  }
+  
+  /**
+   * @param {Object} msg
+   * @param {String} command
+   * @param {Array} args
+   */
+  execute(msg, args) {
+    super.execute.apply(this, arguments);
+    
+    msg.client.sendFile(msg.channel, img, () => {
+      this.sendMessage("Pong Motherfucker!");
+    });
+    
+    this.log("Command", "Ping");
+  }
+}
+
+module.exports = Ping;
