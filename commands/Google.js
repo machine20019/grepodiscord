@@ -25,7 +25,6 @@ class Google extends Command {
   
   execute(msg, args) {
     super.execute.apply(this, arguments);
-
     if (!this.validate(args, 1)) return;
     
     let bot = msg.client,

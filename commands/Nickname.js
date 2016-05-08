@@ -31,7 +31,7 @@ class Nickname extends Command {
       args[0] = '';
     }
     
-    msg.client.setNickname(msg.channel.server, args.join(' '), err => {
+    msg.client.setNickname(msg.channel.server, args.join(' '), msg.client.user, err => {
       if (err) {
         console.log(err);
         return this.log("Error", `Failed to set nickname to: ${args.join(' ')} on ${msg.channel.server} requested by ${msg.author}`);

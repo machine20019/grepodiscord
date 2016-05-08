@@ -3,7 +3,6 @@
 const _ = require('underscore');
 const vm = require('vm');
 const util = require('util');
-const stringify = require('json-stringify-safe');
 const Command = require('../lib/Command.js');
 
 class Eval extends Command {
@@ -34,6 +33,9 @@ class Eval extends Command {
     let msgArray = [],
         bot = msg.client,
         _ = require('underscore'),
+        fs = require('fs'),
+        path = require('path'),
+        config = this.config,
         result;
     
     try {
@@ -41,6 +43,8 @@ class Eval extends Command {
     } catch (e) {
       result = e;
     }
+    
+    if (!result) return;
     
     msgArray.push("```js");
     msgArray.push(result);

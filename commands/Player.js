@@ -3,7 +3,6 @@
 const _ = require('underscore');
 const util = require('util');
 const Api = require('../lib/Api');
-const format = require('string-format');
 const urlencode = require('urlencode');
 const logger = require('../lib/logger');
 const Command = require('../lib/Command');

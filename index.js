@@ -6,6 +6,7 @@ const pkg = require('./package.json');
 
 program
   .version(pkg.version)
+  .option('-d, --debug', 'Run in debug mode')
   .option('-l, --log-level [loglevel]', 'Set log level (default: info)')
   .option('-m, --monitor [monitor]', 'Enable/disable monitor (default: true)')
   .option('-p, --prefixes [prefixes]', 'Comma delimited list of prefixes')
@@ -17,6 +18,7 @@ if (program.monitor === 'false') {
   config.monitorEnabled = false;
 }
 
+config.debug = program.debug;
 config.logLevel = program.logLevel;
 config.prefixes = program.prefixes;
 config.self = program.self;
@@ -30,10 +32,6 @@ let bot = new Bot(),
 
 if (!program.self || (program.server && program.server !== false))
   server = new Server(bot);
-
-if (process.versions.electron) {
-  require('./app/main')(bot);
-}
 
 bot.on('ready', () => {
   if (server) server.start();

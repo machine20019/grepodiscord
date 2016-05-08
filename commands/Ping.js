@@ -15,7 +15,6 @@ class Ping extends Command {
     this.group = "Misc";
     this.description = 'Pings the bot';
     this.usage = 'ping';
-    // this.hideFromHelp = true;
   }
   
   /**
