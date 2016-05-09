@@ -1,22 +1,19 @@
 "use strict";
 
-const Command = require('../lib/Command');
+const Command = require('../../lib/Command');
 
 class Kick extends Command {
   
   constructor(config) {
     super(config);
     
+    this.aliases = ["kick"];
     this.group = "Moderator";
     this.description = "Kick a member";
     this.usage = "kick <user mention>";
     this.example = "kick @NoobLance";
     this.permissions = "manageServer";
     this.disableDM = true;
-  }
-  
-  static get name() {
-    return "kick";
   }
   
   execute(msg, args) {

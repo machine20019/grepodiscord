@@ -1,16 +1,15 @@
 "use strict";
 
 const _ = require('underscore');
-const Api = require('./Api');
 const util = require('util');
 const cron = require('cron');
 const async = require('async');
 const getenv = require('getenv');
-const config = require('./config');
-const logger = require('./logger');
-const models = require('../models');
 const moment = require('moment');
 const join = require('bluebird').join;
+const logger = require('../lib/logger');
+const models = require('../models');
+const Api = require('../lib/Api');
 const api = new Api();
 
 _.throttle = require('lodash/throttle');
@@ -19,6 +18,14 @@ let CronJob = cron.CronJob,
     timeFormat = 'HH:mm:ss';
 
 class Monitor {
+  
+  constructor(config) {
+    this.config = config;
+  }
+  
+  static get name() {
+    return 'Grepolis Monitor';
+  }
 
   /**
    * Start monitor
@@ -31,9 +38,9 @@ class Monitor {
     this.started = false;
     this.db = bot.db;
 
-    logger.debug(this.crontab);
-
-    this.createMonitor();
+    bot.on('ready', () => {
+      this.createMonitor();
+    });
   }
 
   get isRunning() {
@@ -133,7 +140,7 @@ class Monitor {
    * @param  {Function} callback
    */
   checkForUpdates(monitor, callback) {
-    let servers = _.indexBy(config.servers, 'name'),
+    let servers = _.indexBy(this.config.worlds, 'name'),
         server = servers[monitor.world].server;
 
     if (!monitor.alliances.length) {

@@ -3,23 +3,19 @@
 const _ = require('underscore');
 const util = require('util');
 const async = require('async');
-const models = require('../models');
-const logger = require('../lib/logger');
-const Command = require('../lib/Command.js');
+const models = require('../../models');
+const Command = require('../../lib/Command');
 
 class MonitorList extends Command {
   
   constructor(config) {
     super(config);
     
+    this.aliases = ["monitorlist"];
     this.group = "Grepolis";
     this.description = "List alliance monitors.";
     this.usage = "monitorlist";
     this.disableDM = true;
-  }
-  
-  static get name() {
-    return "monitorlist";
   }
   
   execute(msg, args) {
@@ -58,7 +54,7 @@ class MonitorList extends Command {
             });
 
       }, err => {
-        if (err) logger.error(err);
+        if (err) return this.log("Error", err);
         
         alliances.unshift("```Alliances monitored in this chat:");
         alliances.push("```");

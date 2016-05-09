@@ -2,20 +2,18 @@
 
 const _ = require('underscore');
 const util = require('util');
-const Command = require('../lib/Command');
+const Command = require('../../lib/Command');
 
 class ListWorlds extends Command {
   
   constructor(config) {
     super(config);
     
+    this.aliases = ["listworlds"];
+    this.group = "Grepolis";
     this.description = "List worlds supported by the bot.";
     this.usage = "listworlds";
     this.disableDM = true;
-  }
-  
-  static get name() {
-    return 'listworlds';
   }
   
   execute(msg, args) {

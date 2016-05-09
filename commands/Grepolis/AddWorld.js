@@ -1,25 +1,19 @@
 "use strict";
 
 const util = require('util');
-const Command = require('../lib/Command.js');
+const Command = require('../../lib/Command');
 
 class AddWorld extends Command {
   
   constructor(bot, config) {
     super(bot, config);
     
+    this.aliases = ["addworld"];
     this.group = "Grepolis";
-    this.description = "Adds a world to be monitored.";
+    this.description = "Add a supported world.";
     this.usage = "addworld <world name> <world id>";
     this.example = "addworld baris us46";
     this.permissions = "admin";
-  }
-  
-  /**
-   * Command name to be registered
-   */
-  static get name() {
-    return "addworld";
   }
   
   /**

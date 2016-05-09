@@ -2,26 +2,21 @@
 
 const fs = require('fs');
 const path = require('path');
-const config = require('../lib/config');
-const Command = require('../lib/Command.js');
+const Command = require('../../lib/Command');
 
-let img = fs.readFileSync(path.join(config.imagePath, "finger-trans-118.png"));
+let img;
 
 class Ping extends Command {
   
   constructor(config) {
     super(config);
     
+    this.aliases = ["ping"];
     this.group = "Misc";
-    this.description = 'Pings the bot';
+    this.description = 'Ping the bot';
     this.usage = 'ping';
-  }
-  
-  /**
-   * Command name to be registered
-   */
-  static get name() {
-    return 'ping';
+    
+    img = fs.readFileSync(path.join(config.imagePath, "finger-trans-118.png"));
   }
   
   /**

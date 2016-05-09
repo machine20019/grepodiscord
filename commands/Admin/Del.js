@@ -1,25 +1,18 @@
 "use strict";
 
-const Command = require('../lib/Command.js');
+const Command = require('../../lib/Command.js');
 
 class Del extends Command {
   
   constructor(config) {
     super(config);
     
+    this.aliases = ["del", "delete"];
     this.group = "Admin";
     this.description = "Delete own messages";
     this.usage = "del";
     this.hideFromHelp = true;
     this.permissions = "admin";
-  }
-  
-  static get name() {
-    return "del";
-  }
-  
-  static get aliases() {
-    return ["delete"];
   }
   
   execute(msg, args) {

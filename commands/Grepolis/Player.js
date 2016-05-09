@@ -2,10 +2,9 @@
 
 const _ = require('underscore');
 const util = require('util');
-const Api = require('../lib/Api');
 const urlencode = require('urlencode');
-const logger = require('../lib/logger');
-const Command = require('../lib/Command');
+const Command = require('../../lib/Command');
+const Api = require('../../lib/Api');
 
 let api = new Api();
 
@@ -14,13 +13,10 @@ class Player extends Command {
   constructor(config) {
     super(config);
     
+    this.aliases = ["player"];
     this.group = "Grepolis";
     this.description = "Get player stats";
     this.usage = "player <world name> <player name>";
-  }
-  
-  static get name() {
-    return "player";
   }
   
   execute(msg, args) {
@@ -58,7 +54,6 @@ class Player extends Command {
       this.sendMessage(msgArray);
       
     }).catch(err => {
-      logger.error(err);
       this.log("Error", err);
     });
   }

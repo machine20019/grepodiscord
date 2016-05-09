@@ -15,8 +15,7 @@
   },
   "private": true,
   "scripts": {
-    "start": "node index.js",
-    "app": "electron app.js"
+    "start": "node index.js"
   },
   "dependencies": {
     "async": "^1.5.2",

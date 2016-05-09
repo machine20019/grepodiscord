@@ -1,22 +1,19 @@
 "use strict";
 
-const Command = require('../lib/Command');
+const Command = require('../../lib/Command');
 
 class Ban extends Command {
   
   constructor(config) {
     super(config);
     
+    this.aliases = ["ban"];
     this.group = "Moderator";
     this.description = "Ban a member";
     this.usage = "ban <user mention>";
     this.example = "ban @NoobLance";
     this.permissions = "manageServer";
     this.disableDM = true;
-  }
-  
-  static get name() {
-    return "ban";
   }
   
   execute(msg, args) {

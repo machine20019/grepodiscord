@@ -1,22 +1,19 @@
 "use strict";
 
 const util = require('util');
-const Command = require('../lib/Command.js');
+const Command = require('../../lib/Command');
 
 class Leave extends Command {
   
   constructor(config) {
     super(config);
     
+    this.aliases = ["leave"];
     this.group = "Server Manager";
-    this.description = "Tells the bot to leave the server. Type the bot name to confirm.";
-    this.usage = "leave <bot name>";
+    this.description = "Tell the bot to leave the server.";
+    this.usage = "leave <bot username>";
     this.permissions = "manageServer";
     this.disableDM = true;
-  }
-  
-  static get name() {
-    return 'leave';
   }
   
   execute(msg, args) {

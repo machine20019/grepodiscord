@@ -1,26 +1,19 @@
 "use strict";
 
 const util = require('util');
-const Command = require('../lib/Command');
+const Command = require('../../lib/Command');
 
 class Nickname extends Command {
   
   constructor(config) {
     super(config);
     
+    this.aliases = ["nick"];
     this.group = "Admin";
-    this.description = "Changes the bot nickname.";
+    this.description = "Change the bot nickname.";
     this.usage = "nickname <new nickname>";
     this.permissions = "admin";
     this.disableDM = true;
-  }
-  
-  static get name() {
-    return "nickname";
-  }
-  
-  static get aliases() {
-    return ["nick"];
   }
   
   execute(msg, args) {

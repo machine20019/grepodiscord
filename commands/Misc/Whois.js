@@ -1,26 +1,19 @@
 "use strict";
 
 const util = require('util');
-const Command = require('../lib/Command.js');
+const Command = require('../../lib/Command');
 
 class Whois extends Command {
   
   constructor(config) {
     super(config);
     
+    this.aliases = ["whois", "who"];
     this.group = "Misc";
     this.description = "Get user information.";
     this.usage = "whois <user mention>";
     this.example = "whois @NoobLance";
     this.disableDM = true;
-  }
-  
-  static get name() {
-    return "whois";
-  }
-  
-  static get aliases() {
-    return ["who"];
   }
   
   execute(msg, args) {

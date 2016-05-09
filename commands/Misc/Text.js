@@ -1,22 +1,16 @@
 "use strict";
 
-const Command = require('../lib/Command');
+const Command = require('../../lib/Command');
 
 class Text extends Command {
   
   constructor(config) {
     super(config);
     
+    this.aliases = ["text", "shrug", "flip", "unflip"];
+    this.group = "Misc";
     this.description = "A collection of text commands";
     this.hideFromHelp = true;
-  }
-  
-  static get name() {
-    return "text";
-  }
-  
-  static get aliases() {
-    return ["shrug", "flip", "unflip"];
   }
   
   execute(msg, args, command) {

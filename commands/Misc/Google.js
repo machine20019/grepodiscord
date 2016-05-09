@@ -2,25 +2,17 @@
 
 const util = require('util');
 const google = require('google');
-const logger = require('../lib/logger');
-const Command = require('../lib/Command.js');
+const Command = require('../../lib/Command');
 
 class Google extends Command {
   
   constructor(config) {
     super(config);
     
+    this.aliases = ["google", "g"];
     this.group = "Misc";
-    this.description = 'Gets search results from google';
+    this.description = 'Get search results from google';
     this.usage = 'google <search string>';
-  }
-  
-  static get name() {
-    return 'google';
-  }
-  
-  static get aliases() {
-    return ['g'];
   }
   
   execute(msg, args) {
@@ -52,7 +44,7 @@ class Google extends Command {
     
     google.resultsPerPage = 10;
     google(args.join(' '), (err, res) => {
-      if (err) { return logger.error(err); }
+      if (err) { return this.log("Error", err); }
       
       if (!res.links.length) {
         return this.sendMessage("I didn't get any results");

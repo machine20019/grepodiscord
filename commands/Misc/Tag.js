@@ -1,20 +1,17 @@
 "use strict";
 
-const Command = require('../lib/Command');
+const Command = require('../../lib/Command');
 
 class Tag extends Command {
   
   constructor(config) {
     super(config);
     
-    this.group = "misc";
+    this.aliases = ["tag"];
+    this.group = "Misc";
     this.description = "Tag content to be recalled later";
     this.usage = "tag <tagname> [content]";
     this.disableDM = true;
-  }
-  
-  static get name() {
-    return 'tag';
   }
   
   execute(msg, args) {

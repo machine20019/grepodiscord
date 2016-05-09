@@ -2,7 +2,7 @@
 
 const util = require('util');
 const moment = require('moment');
-const Command = require('../lib/Command.js');
+const Command = require('../../lib/Command');
 
 require("moment-duration-format");
 
@@ -11,17 +11,10 @@ class Uptime extends Command {
   constructor(config) {
     super(config);
     
+    this.aliases = ["uptime", "up"];
     this.group = "Misc";
     this.description = "Get bot uptime";
     this.usage = "uptime";
-  }
-  
-  static get name() {
-    return "uptime";
-  }
-  
-  static get aliases() {
-    return ["up"];
   }
   
   execute(msg, args) {

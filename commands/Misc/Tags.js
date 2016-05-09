@@ -1,21 +1,18 @@
 "use strict";
 
 const _ = require('underscore');
-const Command = require('../lib/Command');
+const Command = require('../../lib/Command');
 
 class Tags extends Command {
   
   constructor(config) {
     super(config);
     
-    this.group = "misc";
-    this.description = "Returns a list of tags";
+    this.aliases = ["tags"];
+    this.group = "Misc";
+    this.description = "Return a list of tags";
     this.usage = "tags";
     this.disableDM = true;
-  }
-  
-  static get name() {
-    return 'tags';
   }
   
   execute(msg, args) {

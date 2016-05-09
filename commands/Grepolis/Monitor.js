@@ -2,23 +2,20 @@
 
 const _ = require('underscore');
 const util = require('util');
-const models = require('../models');
-const Command = require('../lib/Command.js');
+const models = require('../../models');
+const Command = require('../../lib/Command');
 
 class Monitor extends Command {
   
   constructor(config) {
     super(config);
     
+    this.aliases = ["monitor"];
     this.group = "Grepolis";
-    this.description = "Monitors an alliance.";
+    this.description = "Monitor an alliance.";
     this.usage = "monitor <world name> <alliance name>";
     this.example = "monitor farsala My Alliance";
     this.disableDM = true;
-  }
-  
-  static get name() {
-    return "monitor";
   }
   
   execute(msg, args) {

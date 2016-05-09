@@ -9,14 +9,20 @@ const logger = require('../lib/logger');
 const utils = require('../lib/utils');
 
 class Server  {
-  constructor(bot) {
-    this.bot = bot;
-    this.app = express();
+  
+  constructor(config) {
+    this.config = config;
+  }
+  
+  static get name() {
+    return 'HTTP Server';
   }
 
-  start() {
-    let app = this.app,
+  start(bot) {
+    let app = this.app = express(),
         router = new Router();
+    
+    this.bot = bot;
 
     router.extendExpress(app);
     router.registerAppHelpers(app);
@@ -24,8 +30,8 @@ class Server  {
     /**
      * Start Web Server setup
      */
-    app.set('port', config.port);
-    app.set('views', config.views);
+    app.set('port', this.config.port);
+    app.set('views', this.config.views);
 
     app.engine('hbs', exphbs({
       extname: '.hbs',
@@ -34,10 +40,10 @@ class Server  {
     }));
 
     app.set('view engine', 'hbs');
-    app.use(express.static(config.public));
+    app.use(express.static(this.config.public));
 
     app.use((req, res, next) => {
-      res.setHeader('X-Powered-By', config.poweredBy);
+      res.setHeader('X-Powered-By', this.config.poweredBy);
       next();
     });
 
@@ -49,7 +55,7 @@ class Server  {
     };
 
     // load controllers
-    utils.readdirRecursive(config.controllerPath, files => {
+    utils.readdirRecursive(this.config.controllerPath, files => {
       files.forEach(file => {
         return this.createRoutes(require(file));
       });
@@ -74,6 +80,4 @@ class Server  {
   }
 }
 
-module.exports = function (config, bot) {
-  return new Server(config, bot);
-};
+module.exports = Server;

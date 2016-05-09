@@ -21,18 +21,19 @@ if (program.monitor === 'false') {
 config.debug = program.debug;
 config.logLevel = program.logLevel;
 config.prefixes = program.prefixes;
+config.server = program.server;
 config.self = program.self;
 
 const Bot = require('./lib/Bot');
-const Server = require('./lib/Server');
+const bot = new Bot();
+
+// const Server = require('./lib/Server');
 
 // start bot
-let bot = new Bot(),
-    server;
 
-if (!program.self || (program.server && program.server !== false))
-  server = new Server(bot);
+// if (!program.self || (program.server && program.server !== false))
+//   server = new Server(bot);
 
-bot.on('ready', () => {
-  if (server) server.start();
-});
+// bot.on('ready', () => {
+//   if (server) server.start();
+// });
